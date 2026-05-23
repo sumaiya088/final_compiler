@@ -3,7 +3,7 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-
+   CodeGenerator.startProgram();
         String[] program = {
 
                 "ক=৫+৩",
@@ -56,5 +56,11 @@ public class Main {
         }
 
         Parser.printSymbolTable();
+          CodeGenerator.endProgram();
+
+                // ---------- SAVE GENERATED FILE ----------
+
+                CodeGenerator.saveToFile();
+
     }
 }
