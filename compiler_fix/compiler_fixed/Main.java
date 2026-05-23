@@ -47,12 +47,20 @@ public class Main {
         };
 
         for (String line : program) {
+            try {
 
-            List<String> tokens = Lexer.tokenize(line);
+    List<String> tokens = Lexer.tokenize(line);
 
-            System.out.println("Tokens: " + tokens);
+    System.out.println("Tokens: " + tokens);
 
-            Parser.parseAndEvaluate(tokens);
+    Parser.parseAndEvaluate(tokens);
+
+}
+
+catch (Exception e) {
+
+    System.out.println("Recovered From Error...");
+}
         }
 
         Parser.printSymbolTable();
