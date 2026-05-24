@@ -243,7 +243,11 @@ else {
         }
 
         return values.pop();
-    }
+    }public static double evaluateExpressionPublic(
+        List<String> tokens) {
+
+    return evaluateExpression(tokens);
+}
 
     // ---------------- PRECEDENCE ----------------
     private static int precedence(String op) {

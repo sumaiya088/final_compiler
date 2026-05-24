@@ -1,9 +1,23 @@
 import java.util.*;
+import java.nio.charset.StandardCharsets;
 
 public class Main {
+    
 
     public static void main(String[] args) {
-   CodeGenerator.startProgram();
+        System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
+        try {
+    System.setOut(
+        new java.io.PrintStream(
+            new java.io.FileOutputStream("output.txt", false)
+        )
+    );
+} catch (Exception e) {
+    System.out.println("Output redirection failed");
+}
+OutputLogger.init();
+        CodeGenerator.startProgram();
+
         String[] program = {
 
                 "ক=৫+৩",
@@ -11,68 +25,64 @@ public class Main {
                 "গ=৫*৬",
                 "ঘ=২০/৫",
 
-                // ---------------- OPERATOR PRECEDENCE ----------------
                 "ঙ=৫+৬*৩",
                 "চ=(৫+৬)*৩",
 
-                // ---------------- NESTED BRACKETS ----------------
                 "ছ=((৫+২)*(৩+৪))",
                 "জ=((২+৩)*(৪+(৫*২)))",
 
-                // ---------------- VARIABLES ----------------
                 "ক=৫",
                 "খ=১০",
                 "গ=ক+খ",
                 "ঘ=ক+খ*২",
-                "ঙ=((ক+২)*(খ-৩))",
 
-                // ---------------- REASSIGNMENT ----------------
                 "ক=১৫",
                 "খ=ক+৫",
 
-                // ---------------- COMPLEX MIX ----------------
                 "চ=((ক+খ)*(৩+(২*৪)))",
 
-                // ---------------- ERROR CASES ----------------
-                "ছ=৫+", // ends with operator
-                "জ=৫++২", // double operator
-                "ঝ=(৫+২", // missing bracket
-                "ঞ=৫+২)", // extra bracket
-                "ট=৫(২+৩)", // missing operator
-                "ঠ=অ+৫", // undefined variable
-                "ড=১০/(৫-৫)", // division by zero
-                "ঢ=(())", // empty brackets
-                "ণ=৫+@", // invalid token
-                "ত=(৫+*)২" // invalid expression
+                "if (ক<খ) ক=100 else ক=200",
+                "while (ক<205) ক=ক+1",
+
+                "ছ=৫+",
+                "জ=৫++২",
+                "ঝ=(৫+২",
+                "ঞ=৫+২)",
+                "ট=৫(২+৩)",
+                "ঠ=অ+৫",
+                "ড=১০/(৫-৫)",
+                "ঢ=(())",
+                "ণ=৫+@",
+                "ত=(৫+*)২"
         };
 
         for (String line : program) {
+
+            System.out.println("\n================================");
+            System.out.println("Source Code: " + line);
+
             try {
 
-    List<String> tokens = Lexer.tokenize(line);
+                List<String> tokens = Lexer.tokenize(line);
 
-    System.out.println("Tokens: " + tokens);
+                System.out.println("Tokens: " + tokens);
 
-    if (tokens.get(0).equals("if") || tokens.get(0).equals("while")) {
+                if (tokens.get(0).equals("if") || tokens.get(0).equals("while")) {
                     ControlFlowDispatcher.handle(tokens);
                 } else {
                     Parser.parseAndEvaluate(tokens);
                 }
 
-}
-
-catch (Exception e) {
-
-    //System.out.println("Recovered From Error...");
-}
+            } catch (Exception e) {
+                //System.out.println("Recovered From Error...");
+            }
         }
 
         Parser.printSymbolTable();
-          CodeGenerator.endProgram();
 
-                // ---------- SAVE GENERATED FILE ----------
+        CodeGenerator.endProgram();
+        CodeGenerator.saveToFile();
 
-                CodeGenerator.saveToFile();
-
+        System.out.println("\nCompiler Finished Successfully!");
     }
 }
