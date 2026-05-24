@@ -53,13 +53,17 @@ public class Main {
 
     System.out.println("Tokens: " + tokens);
 
-    Parser.parseAndEvaluate(tokens);
+    if (tokens.get(0).equals("if") || tokens.get(0).equals("while")) {
+                    ControlFlowDispatcher.handle(tokens);
+                } else {
+                    Parser.parseAndEvaluate(tokens);
+                }
 
 }
 
 catch (Exception e) {
 
-    System.out.println("Recovered From Error...");
+    //System.out.println("Recovered From Error...");
 }
         }
 

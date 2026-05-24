@@ -20,6 +20,95 @@ public class CodeGenerator {
                                 "public static void main(String[] args) {");
         }
         
+        // ---------- ADD GENERATED LINE ----------
+
+        public static void addLine(
+                        String line) {
+
+                generatedCode.add(
+                                "    " + line);
+        }
+
+        // ---------- SAFE VARIABLE DECLARATION (FIX) ----------
+
+        public static void addVariable(
+                        String variable,
+                        String expression) {
+
+                // first time -> declare
+                if (!declaredVariables.contains(variable)) {
+
+                        declaredVariables.add(variable);
+
+                        generatedCode.add(
+                                        "    double " +
+                                                        variable +
+                                                        " = " +
+                                                        expression +
+                                                        ";");
+                }
+
+                // later -> only assign (NO duplicate declaration)
+                else {
+
+                        generatedCode.add(
+                                        "    " +
+                                                        variable +
+                                                        " = " +
+                                                        expression +
+                                                        ";");
+                }
+        }
+
+        // ---------- ADD PRINT LINE ----------
+
+        public static void addPrint(
+                        String text) {
+
+                generatedCode.add(
+                                "System.out.println(\"" +
+                                                text +
+                                                "\");");
+        }
+
+        // ---------- IF GENERATION ----------
+
+        public static void startIf(
+                        String condition) {
+
+                generatedCode.add(
+                                "if(" +
+                                                condition +
+                                                ") {");
+        }
+
+        // ---------- ELSE GENERATION ----------
+
+        public static void startElse() {
+
+                generatedCode.add(
+                                "else {");
+        }
+
+        // ---------- WHILE GENERATION ----------
+
+        public static void startWhile(
+                        String condition) {
+
+                generatedCode.add(
+                                "while(" +
+                                                condition +
+                                                ") {");
+        }
+
+        // ---------- BLOCK END ----------
+
+        public static void endBlock() {
+
+                generatedCode.add("}");
+        }
+
+        
          // ---------- END PROGRAM ----------
 
         public static void endProgram() {
@@ -29,13 +118,7 @@ public class CodeGenerator {
                 generatedCode.add("}");
         }
         
-        public static void addLine(
-                        String line) {
-
-                generatedCode.add(
-                                "    " + line);
-        }
-
+      
 
         // ---------- SAVE FILE ----------
 

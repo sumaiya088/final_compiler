@@ -32,18 +32,47 @@ public class Parser {
 
             double result = evaluateExpression(expr);
 
+           
             symbolTable.put(variable, result);
+             StringBuilder generatedExpr = new StringBuilder();
 
-        } catch (Exception e) {
+            for (String t : expr) {
 
-            if (e.getMessage() != null &&
-                    e.getMessage().equals("Undefined Variable")) {
-                System.out.println("Semantic Error!");
-            } else {
-                System.out.println("Syntax Error!");
+                generatedExpr.append(t);
             }
-        }
+
+            CodeGenerator.addLine(
+
+                    "double " +
+                            variable +
+                            " = " +
+                            generatedExpr +
+                            ";");
+
+
+        } //error handle
+         catch (Exception e) {
+
+        if (e.getMessage() != null &&
+        e.getMessage().equals("Undefined Variable")) {
+
+    System.out.println("Semantic Error!");
+}
+
+else if (e.getMessage() != null &&
+        e.getMessage().equals("Division By Zero")) {
+
+    System.out.println("Semantic Error!");
+}
+
+else {
+
+    System.out.println("Syntax Error!");
+}
+
+//System.out.println("Recovered From Error...");
     }
+}
 
     // ---------------- SYNTAX + SEMANTIC CHECK ----------------
     private static void checkExpression(List<String> tokens) {

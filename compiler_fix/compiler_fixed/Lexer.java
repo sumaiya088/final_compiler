@@ -62,6 +62,25 @@ public class Lexer {
         while (matcher.find()) {
             tokens.add(matcher.group());
         }
+        String joinedTokens = "";
+
+                for (String t : tokens) {
+
+                        joinedTokens += t;
+                }
+
+                String cleanedLine = line.replaceAll(
+                                "\\s+",
+                                "");
+
+                if (!joinedTokens.equals(
+                                cleanedLine)) {
+
+                        System.out.println(
+                                        "Invalid Token Found!");
+                }
+
+
 
         return tokens;
     }
